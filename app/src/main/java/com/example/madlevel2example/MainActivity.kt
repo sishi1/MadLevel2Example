@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madlevel2example.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val reminders = arrayListOf<Reminder>()
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         binding.btnAddReminder.setOnClickListener {
             val reminder = binding.etReminder.text.toString()
-            //addReminder(reminder)
+            addReminder(reminder)
         }
 
         binding.rvReminders.layoutManager =
@@ -32,5 +34,16 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvReminders.addItemDecoration(DividerItemDecoration(this@MainActivity,
         DividerItemDecoration.VERTICAL))
+    }
+
+    private fun addReminder(reminder: String) {
+        if (reminder.isNotBlank()) {
+            reminders.add(Reminder(reminder))
+            reminderAdapter.notifyDataSetChanged()
+            binding.etReminder.text?.clear()
+        } else {
+            Snackbar.make(etReminder, "You must fill in the input field!",
+                Snackbar.LENGTH_SHORT).show()
+        }
     }
 }
